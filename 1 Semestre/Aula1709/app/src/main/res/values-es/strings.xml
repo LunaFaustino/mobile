@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="primeiroTxt">Hola</string>
+    <string name="segundoTxt">Bienvenida</string>
+    <string name="corTxt">Roja</string>
+    <string name="btnLogar">Iniciar sesión</string>
+</resources>

@@ -8,11 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 
 class CadastroFragment : Fragment() {
 
-    private lateinit var editNome:EditText
     private lateinit var btnEnviar:Button
+    private lateinit var txtResultado:TextView
+
+    private var nomeAluno:String? = null
+    private var numFaltas:Int? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        nomeAluno = arguments?.getString("nomeAluno")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -20,12 +30,16 @@ class CadastroFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_cadastro, container, false)
 
-        editNome = view.findViewById(R.id.editNome)
         btnEnviar = view.findViewById(R.id.btnEnviar)
+        txtResultado = view.findViewById(R.id.txtResultado)
+
+        txtResultado.text = "$nomeAluno"
 
         btnEnviar.setOnClickListener{
-            val nome: String = editNome.text.toString()
-            Log.i("teste", "${nome}")
+            nomeAluno = arguments?.getString("nomeAluno")
+            numFaltas = arguments?.getInt("numFaltas")
+
+            Log.i("teste","Nome do aluno: $nomeAluno, numero de faltas: $numFaltas")
         }
 
         return view

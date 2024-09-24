@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +19,15 @@ class MainActivity : AppCompatActivity() {
         btnCadastro = findViewById(R.id.btnCadastro)
 
         btnCadastro.setOnClickListener{
-            supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView,CadastroFragment()).commit()
+            val cadastroFragment = CadastroFragment()
+
+            val bundle = bundleOf(
+                "nomeAluno" to "Luna",
+                "numFaltas" to 0
+            )
+            cadastroFragment.arguments = bundle
+
+            supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView,cadastroFragment).commit()
         }
 
         btnLogin = findViewById(R.id.btnLogin)

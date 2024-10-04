@@ -12,6 +12,7 @@ class DatabaseHelper(contexto:Context): SQLiteOpenHelper(
     // CursorFactory
     // versão
     contexto,"loja",null,1
+
 ){
     override fun onCreate(db: SQLiteDatabase?) {
         // é executado uma única vez, quando o app é instalado

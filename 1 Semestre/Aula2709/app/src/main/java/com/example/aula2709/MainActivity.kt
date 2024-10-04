@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.aula2709.bancodedados.DatabaseHelper
-import java.lang.Exception
+import com.example.aula2709.bancodedados.ProdutoDAO
+import com.example.aula2709.model.Produto
+import kotlin.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editNomeProduto:EditText
     private lateinit var btnSalvar:Button
     private lateinit var btnListar:Button
+    private lateinit var btnAtualizar:Button
+    private lateinit var btnDeletar:Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         editNomeProduto = findViewById(R.id.editNomeProduto)
         btnSalvar = findViewById(R.id.btnSalvar)
         btnListar = findViewById(R.id.btnListar)
+        btnAtualizar = findViewById(R.id.btnAtualizar)
+        btnDeletar = findViewById(R.id.btnDeletar)
 
         btnSalvar.setOnClickListener {
             salvar()
@@ -43,16 +49,24 @@ class MainActivity : AppCompatActivity() {
             listar()
         }
 
+        btnAtualizar.setOnClickListener{
+            atualizar()
+        }
+
+        btnDeletar.setOnClickListener {
+            deletar()
+        }
+
     }
 
     private fun salvar(){
         val nomeProduto = editNomeProduto.text.toString()
-        try {
-            bancoDados.writableDatabase.execSQL("insert into produtos values(null, '$nomeProduto', '120GB')")
-            Log.i("db_info","Produto inserido com sucesso")
-        }catch (e:Exception){
-            e.printStackTrace()
-        }
+        val produtoDAO = ProdutoDAO(this)
+        val produto = Produto(
+            -1,nomeProduto,"SEM DESCRIÇÃO"
+        )
+
+        produtoDAO.salvar(produto)
     }
 
     private fun listar(){
@@ -60,10 +74,34 @@ class MainActivity : AppCompatActivity() {
         val cursor = bancoDados.readableDatabase.rawQuery(sql,null)
 
         while (cursor.moveToNext()){
+            val id = cursor.getInt(0)
             val nome = cursor.getString(1)
             val descricao = cursor.getString(2)
-            Log.i("db_info","Nome: $nome Descrição: $descricao")
+            Log.i("db_info","ID: $id - Nome: $nome - Descrição: $descricao")
 
+        }
+    }
+
+    private fun atualizar(){
+        val nomeProduto = editNomeProduto.text.toString()
+        val sql = "update produtos set titulo = '$nomeProduto' where id_produto = 2;"
+        try {
+            bancoDados.writableDatabase.execSQL(sql)
+            Log.i("db_info","Nome do produto atualizado com sucesso.")
+        }catch (e:Exception) {
+            e.printStackTrace()
+            Log.i("db_info", "Erro ao atualizar.")
+        }
+    }
+
+    private fun deletar(){
+        val sql = "delete from produtos where id_produto = 2;"
+        try {
+            bancoDados.writableDatabase.execSQL(sql)
+            Log.i("db_info","Produto deletado com sucesso")
+        }catch (e:Exception){
+            e.printStackTrace()
+            Log.i("db_info","Erro ao deletar.")
         }
     }
 }

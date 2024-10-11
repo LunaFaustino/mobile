@@ -1,11 +1,15 @@
 package com.example.aula2709
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AlertDialogLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.aula2709.bancodedados.DatabaseHelper
@@ -24,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnListar:Button
     private lateinit var btnAtualizar:Button
     private lateinit var btnDeletar:Button
+    private lateinit var btnAlerta:Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         btnListar = findViewById(R.id.btnListar)
         btnAtualizar = findViewById(R.id.btnAtualizar)
         btnDeletar = findViewById(R.id.btnDeletar)
+        btnAlerta = findViewById(R.id.btnAlerta)
 
         btnSalvar.setOnClickListener {
             salvar()
@@ -57,51 +63,65 @@ class MainActivity : AppCompatActivity() {
             deletar()
         }
 
+        btnAlerta.setOnClickListener{
+            caixaLogAlerta()
+        }
+
+    }
+
+    private fun caixaLogAlerta(){
+        val alertBuilder = AlertDialog.Builder(this)
+        alertBuilder.setTitle("Confirme a exclusão do item")
+        alertBuilder.setMessage("Tem certeza que deseja remover?")
+
+        alertBuilder.setNegativeButton("CANCELAR"){dialog,posicao->
+            Toast.makeText(this,"Cancelando...",Toast.LENGTH_SHORT).show()
+        }
+        alertBuilder.setPositiveButton("CONFIRMAR"){dialog,posicao->
+            Toast.makeText(this,"Excluindo...",Toast.LENGTH_SHORT).show()
+        }
+
+        alertBuilder.setCancelable(false)
+
+        val alertDialog = alertBuilder.create()
+        alertDialog.show()
     }
 
     private fun salvar(){
         val nomeProduto = editNomeProduto.text.toString()
         val produtoDAO = ProdutoDAO(this)
         val produto = Produto(
-            -1,nomeProduto,"SEM DESCRIÇÃO"
+            -1,nomeProduto,""
         )
 
         produtoDAO.salvar(produto)
     }
 
     private fun listar(){
-        val sql = "select * from produtos"
-        val cursor = bancoDados.readableDatabase.rawQuery(sql,null)
+        val produtoDAO = ProdutoDAO(this)
+        val listaProdutos = produtoDAO.listar()
 
-        while (cursor.moveToNext()){
-            val id = cursor.getInt(0)
-            val nome = cursor.getString(1)
-            val descricao = cursor.getString(2)
-            Log.i("db_info","ID: $id - Nome: $nome - Descrição: $descricao")
-
+        if (listaProdutos.isNotEmpty()){
+            listaProdutos.forEach{produto ->
+                Log.i("db_info", "ID: ${produto.id} - Nome: ${produto.titulo} - Descrição: ${produto.descricao}")
+            }
         }
     }
 
     private fun atualizar(){
         val nomeProduto = editNomeProduto.text.toString()
-        val sql = "update produtos set titulo = '$nomeProduto' where id_produto = 2;"
-        try {
-            bancoDados.writableDatabase.execSQL(sql)
-            Log.i("db_info","Nome do produto atualizado com sucesso.")
-        }catch (e:Exception) {
-            e.printStackTrace()
-            Log.i("db_info", "Erro ao atualizar.")
-        }
+        val produtoDAO = ProdutoDAO(this)
+        val produto = Produto(
+            -1,nomeProduto,""
+        )
+
+        produtoDAO.atualizar(produto)
     }
 
     private fun deletar(){
-        val sql = "delete from produtos where id_produto = 2;"
-        try {
-            bancoDados.writableDatabase.execSQL(sql)
-            Log.i("db_info","Produto deletado com sucesso")
-        }catch (e:Exception){
-            e.printStackTrace()
-            Log.i("db_info","Erro ao deletar.")
-        }
+
+        val produtoDAO = ProdutoDAO(this)
+
+        produtoDAO.remover(2)
     }
 }

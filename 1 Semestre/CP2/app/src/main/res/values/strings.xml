@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CP2</string>
+    <string name="enem">INSCRIÇÃO ENEM</string>
+    <string name="dados">DADOS ENVIADOS</string>
+    <string name="nome">Digite seu nome</string>
+    <string name="cpf">Digite seu CPF</string>
+    <string name="idade">Digite sua idade</string>
+    <string name="email">Digite seu e-mail</string>
+    <string name="tel">Digite seu telefone</string>
+    <string name="enviar">ENVIAR</string>
+    <string name="voltar">VOLTAR</string>
+</resources>

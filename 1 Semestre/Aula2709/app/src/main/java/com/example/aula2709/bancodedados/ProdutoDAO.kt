@@ -5,8 +5,10 @@ import android.util.Log
 import com.example.aula2709.model.Produto
 
 class ProdutoDAO(context:Context) : IProdutoDAO {
+    
     val escrita = DatabaseHelper(context).writableDatabase
     val leitura = DatabaseHelper(context).readableDatabase
+
     override fun salvar(produto: Produto): Boolean {
         val titulo = produto.titulo
         val descricao = produto.descricao

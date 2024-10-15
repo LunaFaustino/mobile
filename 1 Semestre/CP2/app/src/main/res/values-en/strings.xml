@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CP2</string>
+    <string name="enem">ENROLLMENT ENEM</string>
+    <string name="dados">DATA SENT</string>
+    <string name="nome">Enter your name</string>
+    <string name="cpf">Enter your CPF</string>
+    <string name="idade">Enter your age</string>
+    <string name="email">Enter your email</string>
+    <string name="tel">Enter your cellphone</string>
+    <string name="enviar">SEND</string>
+    <string name="voltar">GO BACK</string>
+</resources>

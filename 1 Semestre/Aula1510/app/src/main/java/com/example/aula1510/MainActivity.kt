@@ -29,10 +29,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        binding.btnExecutar.setOnClickListener {
-            cadastrarUsuario()
-        }
-
         binding.btnLogin.setOnClickListener {
             logarUsuario()
         }
@@ -44,23 +40,6 @@ class MainActivity : AppCompatActivity() {
         binding.txtCadastrar.setOnClickListener {
             startActivity(Intent(this, CadastroActivity::class.java))
         }
-    }
-
-    private fun cadastrarUsuario() {
-        val email = binding.editEmail.text.toString()
-        val senha = binding.editSenha.text.toString()
-
-        autenticacao.createUserWithEmailAndPassword(email, senha)
-            .addOnSuccessListener { authResult ->
-                val id = authResult.user?.uid
-                val email = authResult.user?.email
-
-                binding.txtResultado.text = "Sucesso ao criar conta: $id - $email"
-            }.addOnFailureListener { exception ->
-                val mensagemErro = exception.message
-
-                binding.txtResultado.text = "Erro ao criar conta: $mensagemErro"
-            }
     }
 
     private fun verificarUsuarioLogado() {

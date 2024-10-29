@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { exception->
                 AlertDialog.Builder(this)
                     .setTitle("ERRO AO LOGAR!")
-                    .setMessage("Verifica e-mail ou senha digitados")
+                    .setMessage("Verifique e-mail ou senha digitados")
                     .setPositiveButton("Fechar"){dialog, posicao->}
                     .create().show()
             }
